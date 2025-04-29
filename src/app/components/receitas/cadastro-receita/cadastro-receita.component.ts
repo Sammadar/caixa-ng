@@ -79,5 +79,4 @@ export class CadastroReceitaComponent {
     this.valor = receita.valor;
     this.idParaEditar = receita.id;
   }
-  // button (click)
 }
