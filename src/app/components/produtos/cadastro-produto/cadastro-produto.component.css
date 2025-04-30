@@ -17,6 +17,7 @@ h1{
     box-sizing: border-box;
 }
 
+
 .tabela,
 .formulario{
     flex: 1;
@@ -25,6 +26,7 @@ h1{
 }
 
 table{
+    justify-items: center;
     width: 100%;
     border-collapse: collapse;
     background-color: #1e1e1e;
@@ -41,7 +43,8 @@ label{
     margin-top: 16px;
 }
 
-input{
+input, 
+select{
     width: 100%;
     padding: 8px;
     background-color: #1e1e1e;
