@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Produto } from '../../../models/produto';
 import { FormsModule } from '@angular/forms';
+import { __values } from 'tslib';
 
 @Component({
   selector: 'app-cadastro-produto',
@@ -14,6 +15,7 @@ export class CadastroProdutoComponent {
 
   nome: string = "";
   produtos: Array<Produto> = [];
+  categoria: any;
 
   salvarProduto() {
     if (this.nome.length < 3) {
@@ -22,27 +24,29 @@ export class CadastroProdutoComponent {
     }
     if (this.nome.length > 30) {
       alert("Nome deve conter no máximo 30 caracteres")
-
     }
+
     if (this.idParaEditar == undefined) {
       this.cadastrarProduto();
     } else {
       this.editarProduto();
     }
-    this.nome = "";
+
+    this.nome, this.categoria= "";
+    
   }
 
   editarProduto() {
     let indiceProduto = this.produtos.findIndex(x => x.id == this.idParaEditar);
     this.produtos[indiceProduto].nome = this.nome;
-
+    this.produtos[indiceProduto].categoria = this.categoria;
     this.idParaEditar = undefined;
   }
 
   cadastrarProduto() {
     this.proximoId++;
-    let produto = new Produto(this.proximoId, this.nome);
-
+    let produto = new Produto(this.proximoId, this.nome, this.categoria);
+// debugger
     this.produtos.push(produto);
     // alert(this.nome);
   }
@@ -58,5 +62,6 @@ export class CadastroProdutoComponent {
   editar(produto: Produto) {
     this.nome = produto.nome;
     this.idParaEditar = produto.id;
+    this.categoria = produto.categoria;
   }
 }

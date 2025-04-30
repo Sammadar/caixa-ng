@@ -6,7 +6,18 @@
             <label for="campo-nome">Nome</label>
             <input type="text" id="campo-nome" placeholder="Digite um texto" [(ngModel)]="nome">
         </div>
-        
+
+        <div class="categoria">
+            <label for="campo-categoria">Categoria</label>
+            <select name ="categoria" id="campo-categoria" [(ngModel)]="categoria">
+                <option disabled selected>Selecione uma opção</option>
+                <option value="Fruta">Fruta</option>
+                <option value="Verdura">Verdura</option>
+                <option value="Comida">Comida</option>
+            </select>
+        </div>    
+            
+        </div>
         <button (click)="salvarProduto()">Salvar</button>
         </div>
 
@@ -16,6 +27,7 @@
                     <tr>
                         <th>Código</th>
                         <th>Nome</th>
+                        <th>Categoria</th>
                         <th>Ação</th>
                     </tr>
                 </thead>
@@ -24,6 +36,7 @@
                         <tr>
                             <td>{{produto.id}}</td>
                             <td>{{produto.nome}}</td>
+                            <td>{{produto.categoria}}</td>
                             <td>
                                 <button (click)="editar(produto)">Editar</button>
                                 <button (click)="apagar(produto)">Apagar</button>
