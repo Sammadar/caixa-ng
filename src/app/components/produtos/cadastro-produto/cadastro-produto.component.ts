@@ -16,6 +16,7 @@ export class CadastroProdutoComponent {
   nome: string = "";
   produtos: Array<Produto> = [];
   categoria: any;
+  quantidade: number = 0;
 
   salvarProduto() {
     if (this.nome.length < 3) {
@@ -33,6 +34,7 @@ export class CadastroProdutoComponent {
     }
 
     this.nome, this.categoria= "";
+    this.quantidade = 0;
     
   }
 
@@ -40,12 +42,14 @@ export class CadastroProdutoComponent {
     let indiceProduto = this.produtos.findIndex(x => x.id == this.idParaEditar);
     this.produtos[indiceProduto].nome = this.nome;
     this.produtos[indiceProduto].categoria = this.categoria;
+    this.produtos[indiceProduto].quantidade = this.quantidade;
+
     this.idParaEditar = undefined;
   }
 
   cadastrarProduto() {
     this.proximoId++;
-    let produto = new Produto(this.proximoId, this.nome, this.categoria);
+    let produto = new Produto(this.proximoId, this.nome, this.categoria, this.quantidade);
 // debugger
     this.produtos.push(produto);
     // alert(this.nome);
@@ -63,5 +67,6 @@ export class CadastroProdutoComponent {
     this.nome = produto.nome;
     this.idParaEditar = produto.id;
     this.categoria = produto.categoria;
+    this.quantidade = produto.quantidade;
   }
 }
