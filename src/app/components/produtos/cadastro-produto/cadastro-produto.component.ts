@@ -15,8 +15,9 @@ export class CadastroProdutoComponent {
 
   nome: string = "";
   produtos: Array<Produto> = [];
-  categoria: any;
+  categoria: string = "";
   quantidade: number = 0;
+  preco: number = 0;
 
   salvarProduto() {
     if (this.nome.length < 3) {
@@ -27,6 +28,25 @@ export class CadastroProdutoComponent {
       alert("Nome deve conter no máximo 30 caracteres")
     }
 
+    if (this.categoria == ""){
+      alert("Selecione uma categoria!");
+      return;
+    }
+
+    if (this.quantidade <= 0){
+      alert("Insira uma quantidade");
+      return;
+    } 
+    
+    let preco = parseFloat(this.preco.toString().replace(",", "."));
+    if (Number.isNaN(preco)) {
+      alert("Preço deve ser um número real");
+      return;}
+    if (preco <= 0) {
+      alert("Preço deve ser maior que R$ 0,00");
+      return;
+    }
+
     if (this.idParaEditar == undefined) {
       this.cadastrarProduto();
     } else {
@@ -35,6 +55,7 @@ export class CadastroProdutoComponent {
 
     this.nome, this.categoria= "";
     this.quantidade = 0;
+    this.preco = 0;
     
   }
 
@@ -43,13 +64,14 @@ export class CadastroProdutoComponent {
     this.produtos[indiceProduto].nome = this.nome;
     this.produtos[indiceProduto].categoria = this.categoria;
     this.produtos[indiceProduto].quantidade = this.quantidade;
+    this.produtos[indiceProduto].preco = this.preco;
 
     this.idParaEditar = undefined;
   }
 
   cadastrarProduto() {
     this.proximoId++;
-    let produto = new Produto(this.proximoId, this.nome, this.categoria, this.quantidade);
+    let produto = new Produto(this.proximoId, this.nome, this.categoria, this.quantidade, this.preco);
 // debugger
     this.produtos.push(produto);
     // alert(this.nome);
@@ -68,5 +90,6 @@ export class CadastroProdutoComponent {
     this.idParaEditar = produto.id;
     this.categoria = produto.categoria;
     this.quantidade = produto.quantidade;
+    this.preco = produto.preco;
   }
 }
