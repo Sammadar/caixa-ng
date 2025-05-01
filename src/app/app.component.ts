@@ -5,7 +5,7 @@ import { CadastroProdutoComponent } from "./components/produtos/cadastro-produto
 
 @Component({
   selector: 'aplicacao-root',
-  imports: [RouterOutlet, CadastroReceitaComponent, CadastroProdutoComponent],
+  imports: [RouterOutlet, CadastroProdutoComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
