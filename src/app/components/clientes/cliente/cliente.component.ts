@@ -1,87 +1,111 @@
 import { Component } from '@angular/core';
+import { ClienteCadastroComponent } from "../cliente-cadastro/cliente-cadastro.component";
+import { Cliente } from '../../../models/cliente';
+import { max, reduce } from 'rxjs';
 import { FormsModule } from '@angular/forms';
-import { Produto } from '../../../models/produto';
 
 @Component({
-  selector: 'app-cadastro-produto',
-  imports: [FormsModule],
-  templateUrl: './cadastro-produto.component.html',
-  styleUrl: './cadastro-produto.component.css'
+  selector: 'app-cliente',
+  imports: [ClienteCadastroComponent, FormsModule],
+  templateUrl: './cliente.component.html',
+  styleUrl: './cliente.component.css'
 })
-export class CadastroProdutoComponent {
+export class ClienteComponent {
+  clientes: Array<Cliente> = new Array();
+  clientesTable: Array<Cliente> = new Array();
 
-  proximoId: number = 0;
+  idAtual: number = 0;
 
-  idParaEditar?: number;
+  busca: string = "";
 
-  nome: string = "";
+  // Será o cliente que utilizaremos para preencher os campos na tela e posteriormente salvar
+  cliente: Cliente;
 
-  categoria: string = "";
+  constructor() {
+    this.cliente = new Cliente();
+  }
 
-  quantidade: number = 0;
+  // evento que é executado quando o componente é instanciado
+  ngOnInit() {
+    this.carregarClientesDoLocalStorage();
+  }
 
-  preco: number = 0;
+  registrarClienteSalvo() {
+    if (this.cliente.id === 0)
+      this.cadastrar();
+    else
+      this.editar();
 
-  vencido: boolean = false;
+    this.cliente = new Cliente();
+    this.salvarEmLocalStorage();
+    this.listarClientesFiltrando();
+  }
 
-  estoque: number = 0;
+  private editar(){
+    let indiceCliente = this.clientes.findIndex(x => x.id == this.cliente.id);
+    this.clientes[indiceCliente].nome = this.cliente.nome;
+    this.clientes[indiceCliente].cpf = this.cliente.cpf;
+  }
 
-  produtos: Array<Produto> = [];
+  private cadastrar() {
+    this.idAtual++;
 
-  salvarProduto() {
-    if (this.nome.length < 3) {
-      alert(" Nome deve conter no mínimo 3 caracteres")
+    this.cliente.id = this.idAtual;
+
+    // Adicionando este objeto na lista de clientes
+    this.clientes.push(this.cliente);
+  }
+
+  listarClientesFiltrando(){
+    if(!this.busca)
+      this.clientesTable = this.clientes;
+
+    this.clientesTable = this.clientes
+      .filter(cliente => cliente.nome.toLowerCase().includes(this.busca.toLowerCase()) || cliente.cpf == this.busca);
+  }
+
+  salvarEmLocalStorage() {
+    // this.clientes é uma lista de objetos da classe Clientes
+    // JSON.stringify é uma função para converter listas/objetos para string no formato JSON
+    const clientesString = JSON.stringify(this.clientes);
+    // Armazenando utilizando a chave 'clientes' a string com a lista de clientes
+    localStorage.setItem("clientes", clientesString);
+  }
+
+  carregarClientesDoLocalStorage() {
+    // Obter do localStorage(armazenamento no navegador) utilizando a chave clientes
+    const clientesString = localStorage.getItem("clientes");
+    // Verificar senão existe a lista de clientes no LocalStorage
+    if (clientesString === null)
+      // Encerra a execução da função, pois n existe lista armazenada
       return;
-    }
+    // Converter a string(JSON) para lista de objetos
+    this.clientes = JSON.parse(clientesString);
+    this.listarClientesFiltrando();
+    // Percorre cada um dos clientes para atualizar o idAtual com o maior id dos clientes cadastrados
+    Array.from(this.clientes).forEach(cliente => {
+      if (cliente.id > this.idAtual) {
+        this.idAtual = cliente.id
+      }
+    });
+  }
 
-    if (this.nome.length > 30) {
-      alert("Nome deve conter no máximo 30 caracteres")
+  apagar(cliente: Cliente) {
+    let confirmacao = confirm(`Deseja realmente apagar o cliente'${cliente.nome}'?`);
+    if (confirmacao !== true)
       return;
-    }
 
-    if (this.idParaEditar == undefined) {
-      this.cadastrarProduto();
-    } else {
-      this.editarProduto();
-    }
+    let indicecliente = this.clientes.findIndex(x => x.id == cliente.id);
+    this.clientes.splice(indicecliente, 1);
 
-    this.nome = "";
-    this.categoria = "";
-
-
-
+    this.salvarEmLocalStorage();
+    this.listarClientesFiltrando();
   }
 
-  editarProduto() {
-    let indiceProduto = this.produtos.findIndex(x => x.id == this.idParaEditar);
-    this.produtos[indiceProduto].nome = this.nome;
-    this.produtos[indiceProduto].categoria = this.categoria;
-    this.produtos[indiceProduto].quantidade = this.quantidade;
-    this.produtos[indiceProduto].preco = this.preco;
-    this.produtos[indiceProduto].vencido = this.vencido;
-    this.produtos[indiceProduto].estoque = this.estoque;
-
-    this.idParaEditar = undefined;
+  preencherCamposParaEditar(cliente: Cliente) {
+    this.cliente = new Cliente();
+    this.cliente.id = cliente.id;
+    this.cliente.nome = cliente.nome;
+    this.cliente.cpf = cliente.cpf;
   }
-
-  cadastrarProduto() {
-    this.proximoId++;
-    let produto = new Produto(this.proximoId, this.nome, this.categoria, this.quantidade, this.preco, this.vencido, this.estoque,);
-    this.produtos.push(produto);
-  }
-  apagar(produto: Produto) {
-    let comfirmacao = confirm(`Deseja realmente apgar o produto'${produto.nome}'?`);
-    let indiceProduto = this.produtos.findIndex(x => x.id == produto.id);
-    this.produtos.splice(indiceProduto, 1)
-  }
-  editar(produto: Produto) {
-    this.nome = produto.nome;
-    this.idParaEditar = produto.id;
-    this.categoria = produto.categoria;
-    this.quantidade = produto.quantidade;
-    this.preco = produto.preco;
-    this.vencido = produto.vencido;
-    this.estoque = produto.estoque;
-  }
-
 }

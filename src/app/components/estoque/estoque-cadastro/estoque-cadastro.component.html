@@ -1,0 +1,16 @@
+<div>
+    <label for="campo-nome">Nome</label>
+    <input type="text" id="campo-nome" [(ngModel)]="estoque!.nome">
+</div>
+
+<div>
+    <label for="campo-quantidade">Quantidade</label>
+    <input type="number" id="campo-quantidade" [(ngModel)]="estoque!.quantidade">
+</div>
+
+<div>
+    <label for="campo-categoria">Categoria</label>
+    <input type="select" id="campo-categoria" [(ngModel)]="estoque!.categoria">
+</div>
+
+<button (click)="salvar()">Salvar</button>
