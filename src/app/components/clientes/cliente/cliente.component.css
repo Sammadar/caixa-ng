@@ -55,3 +55,17 @@ button{
 button:hover{
     background-color: #444;
 }
+
+
+.busca{
+    margin-bottom: 8px;
+}
+
+.busca{
+    display: flex;
+    gap: 8px;
+}
+
+.busca input{
+    width: 200px;
+}

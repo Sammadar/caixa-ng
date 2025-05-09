@@ -57,9 +57,6 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
-          "options":{
-            "open": false
-          },
           "configurations": {
             "production": {
               "buildTarget": "caixa-ng:build:production"
@@ -97,6 +94,6 @@
     }
   },
   "cli": {
-    "analytics": "a988d00f-e77a-40ca-8584-85650b49da34"
+    "analytics": "20e77d16-75e3-4967-91f5-889318164d2a"
   }
 }

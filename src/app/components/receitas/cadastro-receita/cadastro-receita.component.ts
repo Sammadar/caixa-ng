@@ -9,14 +9,15 @@ import { Receita } from '../../../models/receita';
   styleUrl: './cadastro-receita.component.css'
 })
 export class CadastroReceitaComponent {
-  // Toda vez que utlizar [(ngModel)] é obrigatório importar FormsModule
+  // Toda vez que utilizar [(ngModel)] é obrigatório importar FormsModule
   // ngModel é a forma que fazemos a ligação de algum campo com uma variável
   proximoId: number = 0;
-  //idParaEditar é uma variável do tipo number que é nullable, ou seja, ela pode ou não ter valer (?)
+
+  // idParaEditar é uma variável do tipo number que é nullable, ou seja, ela pode ou n ter valor
   idParaEditar?: number;
 
   nome: string = "";
-  valor: number = 0
+  valor: number = 0;
   receitas: Array<Receita> = [];
 
   salvarReceita() {
@@ -28,9 +29,11 @@ export class CadastroReceitaComponent {
       alert("Nome deve conter no máximo 30 caracteres")
       return;
     }
+
+    // "5490,29" => "5490.29", por isso é necessário fazer o replace
     let valor = parseFloat(this.valor.toString().replace(",", "."));
-    // NaN é not a number, é recebido NaN quando o valor que é tentado converter para float
-    //não é um float válido
+    // NaN é not a number, é recebido NaN quando o valor que é tentado converter para float 
+    // não é um float válido
     if (Number.isNaN(valor)) {
       alert("Valor deve ser um número real");
       return;
@@ -39,6 +42,7 @@ export class CadastroReceitaComponent {
       alert("Valor deve ser maior que R$ 0,00");
       return;
     }
+
     if (this.idParaEditar == undefined) {
       this.cadastrarReceita();
     } else {
@@ -47,6 +51,7 @@ export class CadastroReceitaComponent {
 
     this.nome = "";
     this.valor = 0;
+    // alert(this.nome);
   }
 
   editarReceita() {
@@ -58,19 +63,25 @@ export class CadastroReceitaComponent {
   }
 
   cadastrarReceita() {
+    // Incrementar a variável proximoId
+    // this.proximoId = this.proximoId + 1;
+    // this.proximoId += 1;
     this.proximoId++;
+
     let receita = new Receita(this.proximoId, this.nome, this.valor);
-    // debugger;
-    // como adicionar um elemento em uma lista de strinig em ts
+
+    // como adicionar um elemento em uma lista de string em ts
     this.receitas.push(receita);
-    // alert(this.nome);
   }
 
   apagar(receita: Receita) {
-    let confirmacao = confirm(`Deseja realmente apagar a receita '${receita.nome}'?`)
+    let confirmacao = confirm(`Deseja realmente apagar a receita '${receita.nome}'?`);
+    if (confirmacao == false)
+      return;
+
     // Buscando o indice da receita filtrando por id da receita que foi selecionada
     let indiceReceita = this.receitas.findIndex(x => x.id == receita.id);
-    // removendo a receita da lista receitas utilizando indice, removendo 1 elemento da lista
+    // Removendo a receita da lista receitas utilizando o indice, removendo 1 elemento da lista
     this.receitas.splice(indiceReceita, 1);
   }
 

@@ -1,22 +1,22 @@
 <div class="container">
-    <h1>Listas de Receitas</h1>
+    <h1>Lista de Receitas</h1>
 
     <div class="formulario-tabela">
-        <div class="formulario"><div>
-            <label for="campo-nome">Nome</label>
-            <input type="text" id="campo-nome" placeholder="Digite um texto" [(ngModel)]="nome">
+        <div class="formulario">
+            <div>
+                <label for="campo-nome">Nome</label>
+                <input type="text" id="campo-nome" placeholder="Digite um texto" [(ngModel)]="nome">
+            </div>
+            
+            <div>
+                <label for="campo-valor">Valor</label>
+                <input type="text" id="campo-valor" [(ngModel)]="valor">
+            </div>
+            
+            <button (click)="salvarReceita()">Salvar</button>
         </div>
-        
-        <div>
-            <label for="campo-valor">Valor</label>
-            <input type="text" id="campo-valor" [(ngModel)]="valor">
-        </div>
-        
-        <button (click)="salvarReceita()">Salvar</button>
-        </div>
-
         <div class="tabela">
-            <table border ="1">
+            <table border="1">
                 <thead>
                     <tr>
                         <th>Código</th>
@@ -26,7 +26,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @for(receita of receitas; track receitas){
+                    @for(receita of receitas; track receita){
                         <tr>
                             <td>{{receita.id}}</td>
                             <td>{{receita.nome}}</td>
@@ -40,5 +40,5 @@
                 </tbody>
             </table>
         </div>
-    <div>
-<div>
+    </div>
+</div>
