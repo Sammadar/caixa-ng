@@ -6,6 +6,8 @@ no `localStorage` do navegador, então não precisa de servidor para testar.
 
 Projeto de curso.
 
+> **Ao vivo:** https://sammadar.github.io/caixa-ng/clientes
+
 ## Como rodar
 
 ```bash
